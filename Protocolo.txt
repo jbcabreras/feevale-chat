@@ -1,0 +1,117 @@
+*****************************************************************
+
+            PROTOCOLO PROGRAMAÇÃO PARA INTERNET 2
+
+*****************************************************************
+-----------------------------------------------------------------
+# DICIONÁRIO
+
+-1: recusa de login
+0: aceita login
+1: requisição de login
+2: envio de mensagem
+3: loggout
+4: requisição de envio de arquivo
+5: aceita envio de arquivo
+6: recusa envio de arquivo
+7: envio de bytes do arquivo ocorreu com sucesso.
+8: erro no envio de bytes do arquivo.
+
+-----------------------------------------------------------------
+# LOGIN
+
+Quando você enviar ou receber uma requisição de login, ou seja,
+quando deseja se conectar com outro chat, você deve enviar os
+seguintes parâmetros:
+
+    + JSONObject
+        + cod (Int) (valor: 1)
+        + nome (String)
+        + img (String) (imagem em 'base64')
+            http://myjeeva.com/convert-image-to-string-and-string-to-image-in-java.html
+        
+
+Quando receber uma requisição de login, você poderá recusar ou
+aceitar a requisição. Em ambos os casos você deve enviar dados:
+
+    + Se aceitar:
+        + JSONObject
+            + cod (Int) (valor: 0)
+            + nome (String)
+            + img (String) (imagem em 'base64')
+            
+
+    + Se recusar:
+        + JSONObject
+            + cod (Int) (valor: -1)
+
+
+
+-----------------------------------------------------------------
+# ENVIO/RECEBIMENTO DE MENSAGENS
+
+Quando você enviar ou receber mensagens, enviará/receberá os
+seguintes dados:
+
+    + JSONObject
+        + cod (Int) (valor: 2)
+        + mensagem (String) (máximo 8 mil caracteres)
+
+
+
+-----------------------------------------------------------------
+# ENVIO/RECEBIMENTO DE ARQUIVO
+
+O remetente envia os seguintes dados:
+    + JSONObject
+        + cod (Int) (valor: 4)
+        + nomeArquivo (String) (deve ter nome e extensão)
+        + tamanho (Int) (tamanho em KB)
+
+
+Ele aguarda pelas seguintes respostas:
+
+    1. Destinatário aceita o envio do arquivo:
+        + JSONObject
+            + cod (Int) (valor: 5)
+            + porta (Int) (valor < 65000)
+
+        Neste caso, o remetente deve abrir um novo socket nesta
+        porta para enviar o arquivo.
+
+    2. Destinatário recusa o envio do arquivo:
+        + JSONObject
+            + cod (Int) (valor: 6)
+
+        Neste caso deve ser cancelado o envio.
+
+
+Caso o envio do arquivo seja aceito por ambas as partes, deve-se
+abrir um novo socket na porta combinada e deve seguir o seguinte
+procedimento:
+
+    1. Transformar o arquivo em um array de bytes.
+    2. Enviar 4096KB deste arquivo pelo socket.
+    3. Aguardar pelo seguinte retorno em caso de sucesso:
+        + JSONObject
+            + cod (Int) (valor: 7)
+    4. Enviar os próximos 4096KB.
+    5. Repetir os passos 2 e 3 até que todos os bytes do arquivo
+       tenham sido enviados.
+
+    Caso algum erro ocorra no remetente, ele deve enviar:
+        + JSONObject
+            + cod (Int) (valor: 8)
+    O mesmo será enviado em caso de loggout.
+    O envio do arquivo deve então ser interrompido.
+
+
+
+-----------------------------------------------------------------
+# LOGGOUT
+
+Caso um dos lados deslogue, será enviado:
+    + JSONObject
+        + cod (Int) (valor: 3)
+
+-----------------------------------------------------------------
