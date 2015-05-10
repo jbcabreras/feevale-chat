@@ -2,7 +2,7 @@
 
             PROTOCOLO PROGRAMAÇÃO PARA INTERNET 2
 
-Versão: 1.1
+Versão: 1.2
 
 *****************************************************************
 -----------------------------------------------------------------
@@ -30,7 +30,8 @@ seguintes parâmetros:
         + cod (Int) (valor: 1)
         + nome (String)
         + img (String) (imagem em 'base64')
-            http://myjeeva.com/convert-image-to-string-and-string-to-image-in-java.html
+            
+    A imagem deve ser um arquivo jpeg.
         
 
 Quando receber uma requisição de login, você poderá recusar ou
@@ -128,6 +129,11 @@ Caso um dos lados deslogue, será enviado:
 
 =================================================================
 # CHANGELOG
+
+1.2
+    + 2015-05-10
+        > Alteração no envio de imagem do login para definir que
+          somente arquivos JPEG poderão ser enviados.
 
 1.1
     + 2015-05-10
