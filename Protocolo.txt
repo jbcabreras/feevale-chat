@@ -2,7 +2,7 @@
 
             PROTOCOLO PROGRAMAÇÃO PARA INTERNET 2
 
-Versão: 1.0
+Versão: 1.1
 
 *****************************************************************
 -----------------------------------------------------------------
@@ -101,12 +101,19 @@ procedimento:
     5. Repetir os passos 2 e 3 até que todos os bytes do arquivo
        tenham sido enviados.
 
-    Caso algum erro ocorra no remetente, ele deve enviar:
+    Caso aconteça algum erro quando estiver enviando alguma parte
+    do arquivo, deve-se tentar reenviar a parte.
+    Caso o erro se repita neste novo envio, deve cancelar o envio
+    do arquivo.
+
+    Caso acontenteça algum erro no destinatário do arquivo, o
+    destinatário deve enviar o seguinte dado:
         + JSONObject
             + cod (Int) (valor: 8)
-    O mesmo será enviado em caso de loggout.
-    O envio do arquivo deve então ser interrompido.
 
+    Neste caso, o remetente deve tentar reenviar a parte do arquivo.
+    Caso o remetente receba a mesma resposta novamente, deve cancelar
+    o envio do arquivo.
 
 
 -----------------------------------------------------------------
@@ -121,6 +128,12 @@ Caso um dos lados deslogue, será enviado:
 
 =================================================================
 # CHANGELOG
+
+1.1
+    + 2015-05-10
+        > Inclusão de fluxo de reenvio de parte do arquivo caso
+          algum erro ocorra no envio ou recebimento.
+          Contrib: Mateus Schmitz
 
 1.0
     + 2015-05-09
