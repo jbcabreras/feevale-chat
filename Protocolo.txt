@@ -94,11 +94,11 @@ abrir um novo socket na porta combinada e deve seguir o seguinte
 procedimento:
 
     1. Transformar o arquivo em um array de bytes.
-    2. Enviar 4096KB deste arquivo pelo socket.
+    2. Enviar 4096 bytes deste arquivo pelo socket.
     3. Aguardar pelo seguinte retorno em caso de sucesso:
         + JSONObject
             + cod (Int) (valor: 7)
-    4. Enviar os próximos 4096KB.
+    4. Enviar os próximos 4096 bytes.
     5. Repetir os passos 2 e 3 até que todos os bytes do arquivo
        tenham sido enviados.
 
@@ -129,6 +129,11 @@ Caso um dos lados deslogue, será enviado:
 
 =================================================================
 # CHANGELOG
+
+1.3
+    + 2015-05-17
+        > Alteracao para enviar 4096 bytes e nao 4096KB pelo socket
+          por vez.
 
 1.2
     + 2015-05-10
